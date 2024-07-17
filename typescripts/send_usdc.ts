@@ -8,7 +8,6 @@ import {
 import {
     getOrCreateAssociatedTokenAccount,
     createTransferInstruction,
-    TOKEN_PROGRAM_ID
 } from '@solana/spl-token';
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
@@ -17,7 +16,6 @@ dotenv.config();
 (async () => {
     const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
     
-    // Read the keypair from the file
     const keypairPath = `${process.env.HOME}/.config/solana/id.json`;
     const keypairData = JSON.parse(fs.readFileSync(keypairPath, 'utf8'));
     const fromKeypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
