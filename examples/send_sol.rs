@@ -11,8 +11,7 @@ fn main() {
     );
     let payer = solana_client_example::keypair();
     let to: Pubkey = std::env::var("to").unwrap().parse().unwrap();
-    // 0.001 SOL
-    let instruction = solana_sdk::system_instruction::transfer(&payer.pubkey(), &to, 1_000_000);
+    let instruction = solana_sdk::system_instruction::transfer(&payer.pubkey(), &to, 10u64.pow(9));
     let transaction = Transaction::new_signed_with_payer(
         &[instruction],
         Some(&payer.pubkey()),

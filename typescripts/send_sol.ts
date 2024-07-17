@@ -20,13 +20,13 @@ dotenv.config();
     const to_addr = new PublicKey(process.env.to as string);
 
     const lamportsToSend = 1_000_000;
-    const transferTransaction = new Transaction().add(
-        SystemProgram.transfer({
-            fromPubkey: fromKeypair.publicKey,
-            toPubkey: to_addr,
-            lamports: lamportsToSend,
-        }),
-    );
+    const transfer = SystemProgram.transfer({
+        fromPubkey: fromKeypair.publicKey,
+        toPubkey: to_addr,
+        lamports: lamportsToSend,
+    });
+    const transferTransaction = new Transaction().add(transfer);
+    // transferTransaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
    
     const txhash = await sendAndConfirmTransaction(connection, transferTransaction, [
         fromKeypair,
