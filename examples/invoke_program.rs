@@ -13,7 +13,7 @@ fn main() {
         CommitmentConfig::confirmed(),
     );
     let payer = solana_client_example::keypair();
-    let program_id: Pubkey = std::env::var("program_id").unwrap().parse().unwrap();
+    let program_id: Pubkey = std::env::var("PROGRAM_ID").unwrap().parse().unwrap();
 
     let instruction = Instruction {
         program_id,

@@ -15,6 +15,7 @@ use std::env;
 /// https://solscan.io/tx/5Y6vDu6JJpBThSGc6QuZHZCnZyJqbHfHnjAuR7qsrZJEoChMdtQkUhu2SfWkUR6hwZCt9Vwxf4nogTKUruGSiyZG?cluster=devnet
 /// https://explorer.solana.com/tx/5Y6vDu6JJpBThSGc6QuZHZCnZyJqbHfHnjAuR7qsrZJEoChMdtQkUhu2SfWkUR6hwZCt9Vwxf4nogTKUruGSiyZG?cluster=devnet
 /// USDC addr 4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU
+/// **如果to账户没有创建过USDC Token Account则发送方需要额外支付Created Token Account费用**
 fn main() {
     dotenv::dotenv().unwrap();
     let client = RpcClient::new_with_commitment(

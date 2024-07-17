@@ -15,7 +15,7 @@ dotenv.config();
     const keypairPath = `${process.env.HOME}/.config/solana/id.json`;
     const keypairData = JSON.parse(fs.readFileSync(keypairPath, 'utf8'));
     const payer = Keypair.fromSecretKey(new Uint8Array(keypairData));
-    const programId = new PublicKey(process.env.program_id as string);
+    const programId = new PublicKey(process.env.PROGRAM_ID as string);
 
     // Create an instruction to call your program
     const instruction = new TransactionInstruction({
