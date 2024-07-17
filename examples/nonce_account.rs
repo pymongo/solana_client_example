@@ -26,7 +26,7 @@ fn main() {
     //     }
     // };
 
-    let program_id: Pubkey = std::env::var("PROGRAM_ID").unwrap().parse().unwrap();
+    let program_id: Pubkey = std::env::var("program_id").unwrap().parse().unwrap();
 
     let advance_ix = solana_sdk::system_instruction::advance_nonce_account(
         &nonce_account.pubkey(),

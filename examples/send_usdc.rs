@@ -24,8 +24,8 @@ fn main() {
     );
     let from_keypair: Keypair = solana_client_example::keypair();
 
-    let to_addr: Pubkey = env::var("TO").unwrap().parse().unwrap();
-    let usdc_mint: Pubkey = env::var("USDC_MINT").unwrap().parse().unwrap();
+    let to_addr: Pubkey = env::var("to").unwrap().parse().unwrap();
+    let usdc_mint: Pubkey = env::var("usdc_mint").unwrap().parse().unwrap();
 
     let lamports_to_send = 1_000_000; // Amount to send (1 USDC in this case, as USDC has 6 decimals)
 
