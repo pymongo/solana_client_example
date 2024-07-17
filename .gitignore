@@ -1,5 +1,7 @@
-/target
+target
 Cargo.lock
 package-lock.json
 node_modules
 .env
+# for rsync ignore
+.git
