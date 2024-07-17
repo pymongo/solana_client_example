@@ -69,7 +69,7 @@ dotenv.config();
 
     await queryCounter(connection, greetedPubkey);
     const instruction = new TransactionInstruction({
-        keys: [{ pubkey: payer.publicKey, isSigner: false, isWritable: true }],
+        keys: [{ pubkey: greetedPubkey, isSigner: false, isWritable: true }],
         programId,
         data: Buffer.alloc(0)
     });
