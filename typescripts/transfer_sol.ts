@@ -4,7 +4,8 @@ import {
     Transaction,
     sendAndConfirmTransaction,
     TransactionInstruction,
-    LAMPORTS_PER_SOL
+    LAMPORTS_PER_SOL,
+    SystemProgram
 } from '@solana/web3.js';
 import { init } from './init';
 
@@ -40,11 +41,12 @@ class Instruction {
     const { client, payer } = init();
     const programId = new PublicKey(process.env.transfer_sol!);
     const to = new PublicKey(process.env.to!);
-    const data = new Instruction({ instruction: InstructionType.ProgramTransfer, amount: 0.01 * LAMPORTS_PER_SOL });
+    const data = new Instruction({ instruction: InstructionType.CpiTransfer, amount: 0.01 * LAMPORTS_PER_SOL });
     const instruction = new TransactionInstruction({
         keys: [
             { pubkey: payer.publicKey, isSigner: true, isWritable: true },
-            { pubkey: to, isSigner: false, isWritable: true }
+            { pubkey: to, isSigner: false, isWritable: true },
+            { pubkey: SystemProgram.programId, isSigner: false, isWritable: false }
         ],
         programId,
         data: data.toBuffer()
