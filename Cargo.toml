@@ -3,7 +3,7 @@
 members = ["programs/greeting_account"]
 [workspace.dependencies]
 borsh = "1.5.1"
-borsh-derive = "1.5.1"
+#borsh-derive = "1.5.1"
 solana-program = "2.0.2"
 # program's dev-dependencies
 solana-program-test = "2.0.2"
@@ -21,6 +21,7 @@ solana-sdk.workspace = true
 solana-rpc-client-nonce-utils = "2.0.2"
 spl-token = "6.0.0"
 spl-associated-token-account = "4.0.0"
+borsh.workspace = true
 
 serde_json = "1.0.120"
 dotenv = "0.15.0"

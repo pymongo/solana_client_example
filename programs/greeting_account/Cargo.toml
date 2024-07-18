@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 borsh.workspace = true
-borsh-derive.workspace = true
+#borsh-derive.workspace = true
 solana-program.workspace = true
 
 [dev-dependencies]
