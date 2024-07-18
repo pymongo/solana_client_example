@@ -38,11 +38,14 @@ class Instruction {
 
 (async () => {
     const { client, payer } = init();
-    const programId = new PublicKey(process.env.hello_world!);
-    const data = new Instruction({ instruction: InstructionType.ProgramTransfer, amount: 1 * LAMPORTS_PER_SOL });
+    const programId = new PublicKey(process.env.transfer_sol!);
+    const to = new PublicKey(process.env.to!);
+    const data = new Instruction({ instruction: InstructionType.ProgramTransfer, amount: 0.01 * LAMPORTS_PER_SOL });
     const instruction = new TransactionInstruction({
-        // our program only logs hello world and doesn't need any accounts.
-        keys: [{ pubkey: payer.publicKey, isSigner: true, isWritable: true }],
+        keys: [
+            { pubkey: payer.publicKey, isSigner: true, isWritable: true },
+            { pubkey: to, isSigner: false, isWritable: true }
+        ],
         programId,
         data: data.toBuffer()
     });

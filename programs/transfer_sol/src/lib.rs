@@ -2,11 +2,19 @@ use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint,
     entrypoint::ProgramResult,
-    msg,
-    program_error::ProgramError,
     pubkey::Pubkey,
+    msg,
 };
 use borsh::BorshDeserialize;
+
+macro_rules! log {
+    ($msg:expr) => {
+        msg!(&format!("{}:{} {}", file!(), line!(), $msg))
+    };
+    ($($arg:tt)*) => {
+        msg!(&format!("{}:{} {}", file!(), line!(), format!($($arg)*)))
+    }
+}
 
 #[derive(BorshDeserialize, Debug)]
 pub enum Instruction {
@@ -35,10 +43,11 @@ pub fn process_instruction(
 }
 
 fn transfer_sol_with_cpi(accounts: &[AccountInfo], amount: u64) -> ProgramResult {
+    log!("transfer_sol_with_cpi accounts.len()={} amount={amount}", accounts.len());
     let accounts_iter = &mut accounts.iter();
     let payer = next_account_info(accounts_iter)?;
     let recipient = next_account_info(accounts_iter)?;
-    // let system_program = next_account_info(accounts_iter)?;
+    let _system_program = next_account_info(accounts_iter)?;
     
     solana_program::program::invoke(
         &solana_program::system_instruction::transfer(payer.key, recipient.key, amount),
@@ -54,6 +63,7 @@ fn transfer_sol_with_program(
     accounts: &[AccountInfo],
     amount: u64,
 ) -> ProgramResult {
+    log!("transfer_sol_with_program accounts.len()={} amount={amount}", accounts.len());
     let accounts_iter = &mut accounts.iter();
     let payer = next_account_info(accounts_iter)?;
     let recipient = next_account_info(accounts_iter)?;
