@@ -45,8 +45,8 @@ fn main() {
                                 client.get_minimum_balance_for_rent_exemption(size).unwrap();
                             let ix = create_account_with_seed(
                                 &payer.pubkey(),
-                                &payer.pubkey(),
                                 &program_data_pubkey,
+                                &payer.pubkey(),
                                 seed,
                                 lamports,
                                 size as u64,
@@ -72,12 +72,12 @@ fn main() {
     let query_account = || {
         let data = client.get_account_data(&program_data_pubkey).unwrap();
         let data = GreetingAccount::deserialize(&mut data.as_ref()).unwrap();
-        println!("{}", data.counter);
+        println!("counter = {}", data.counter);
     };
     query_account();
     let instruction = Instruction {
         program_id,
-        accounts: vec![AccountMeta::new(payer.pubkey(), true)],
+        accounts: vec![AccountMeta::new(program_data_pubkey, false)],
         data: Vec::new(),
     };
     let transaction = Transaction::new_signed_with_payer(

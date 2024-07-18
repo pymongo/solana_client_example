@@ -45,3 +45,18 @@ stack backtrace:
              at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/ops/function.rs:250:5
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 ```
+
+```diff
+                             let ix = create_account_with_seed(
+-                                &payer.pubkey(),
+                                 &payer.pubkey(),
+                                 &program_data_pubkey,
++                                &payer.pubkey(),
+```
+
+create_account_with_seed的参数
+
+- from_pubkey: payer
+- to_pubkey: program_data_pubkey
+- base: payer
+- owner: program_id
