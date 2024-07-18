@@ -1,7 +1,5 @@
 import {
-    Connection,
     PublicKey,
-    Keypair,
     Transaction,
     sendAndConfirmTransaction,
     LAMPORTS_PER_SOL,

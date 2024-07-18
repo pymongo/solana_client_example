@@ -1,9 +1,4 @@
-import {
-    PublicKey,
-    Transaction,
-    sendAndConfirmTransaction,
-    TransactionInstruction
-} from '@solana/web3.js';
+import { PublicKey, Transaction, sendAndConfirmTransaction, TransactionInstruction } from '@solana/web3.js';
 import { init } from './init';
 (async () => {
     const { client, payer } = init();
