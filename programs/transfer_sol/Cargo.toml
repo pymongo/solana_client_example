@@ -1,0 +1,11 @@
+[package]
+name = "transfer_sol"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+borsh.workspace = true
+solana-program.workspace = true
+
+[lib]
+crate-type = ["cdylib", "lib"]

@@ -32,7 +32,7 @@ dotenv.config();
     const keypairPath = `${process.env.HOME}/.config/solana/id.json`;
     const keypairData = JSON.parse(fs.readFileSync(keypairPath, 'utf8'));
     const payer = Keypair.fromSecretKey(new Uint8Array(keypairData));
-    const programId = new PublicKey(process.env.greeting_hello as string);
+    const programId = new PublicKey(process.env.greeting_hello!);
 
     const GREETING_SEED = 'hello';
     const greetedPubkey = await PublicKey.createWithSeed(
@@ -84,13 +84,10 @@ dotenv.config();
 })();
 
 async function queryCounter(connection: Connection, greetedPubkey: PublicKey) {
-    const accountInfo = await connection.getAccountInfo(greetedPubkey);
-    if (accountInfo === null) {
-        throw 'Error: cannot find the greeted account';
-    }
+    const accountData: Buffer = (await connection.getAccountInfo(greetedPubkey))!.data;
     const greeting = borsh.deserialize(
         schema,
-        accountInfo.data,
+        accountData,
     ) as GreetingAccount;
     console.info(`counter = ${greeting.counter}`);
 }

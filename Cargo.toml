@@ -1,6 +1,6 @@
 # can't use cargo workspace, cargo build-bpf would error
 [workspace]
-members = ["programs/greeting_account"]
+members = ["programs/greeting_account", "programs/transfer_sol"]
 [workspace.dependencies]
 borsh = "1.5.1"
 #borsh-derive = "1.5.1"

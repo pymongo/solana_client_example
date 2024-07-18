@@ -23,7 +23,7 @@ function readKeypair(file: string): Keypair {
     const accountInfo = await connection.getAccountInfo(nonceAccountKey.publicKey);
     if (accountInfo === null) throw new Error("")
     const nonceAccount = NonceAccount.fromAccountData(accountInfo.data);
-    const programId = new PublicKey(process.env.program_id as string);
+    const programId = new PublicKey(process.env.hello_world!);
 
     // make a nonce advance instruction
     const advanceIX = SystemProgram.nonceAdvance({

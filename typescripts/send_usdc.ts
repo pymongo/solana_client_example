@@ -20,8 +20,8 @@ dotenv.config();
     const keypairData = JSON.parse(fs.readFileSync(keypairPath, 'utf8'));
     const fromKeypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
     
-    const toAddr = new PublicKey(process.env.to as string);
-    const usdcMint = new PublicKey(process.env.usdc_mint as string);
+    const toAddr = new PublicKey(process.env.to!);
+    const usdcMint = new PublicKey(process.env.usdc_mint!);
     const lamportsToSend = 1_000_000; // Amount to send (1 USDC in this case, as USDC has 6 decimals)
 
     const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
