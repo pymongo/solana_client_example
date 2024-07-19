@@ -28,3 +28,17 @@ Catch the `SendTransactionError` and call `getLogs()` on it for full details.
   ]
 }
 ```
+
+ETH/SOL 智能合约内都不能直接进行ETH/SOL余额加减进行转账，必须调用内置函数或者SystemProgram例如transfer/send/call才能进行 ETH/SOL 交易
+
+ERC20 Token的开发者确实有能力通过智能合约逻辑来直接修改账户的Token余额。因此，如果发现Token被盗，开发者可以编写和部署新的智能合约或更新现有合约来回滚被盗的Token，Solana Token发行方无法直接修改账户余额
+
+```
+root@lb1:~/solana_client_example# solana account 8xubajzX923ZXpUzbyTcXuxy9QcMbrUCosm4H6ZRtTtk
+
+Public Key: 8xubajzX923ZXpUzbyTcXuxy9QcMbrUCosm4H6ZRtTtk
+Balance: 0.00114144 SOL
+Owner: BPFLoaderUpgradeab1e11111111111111111111111
+```
+
+所以所有 solana account owner 都是 11111 这个 SystemProgram

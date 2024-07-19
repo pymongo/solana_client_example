@@ -1,11 +1,11 @@
+use borsh::BorshDeserialize;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint,
     entrypoint::ProgramResult,
-    pubkey::Pubkey,
     msg,
+    pubkey::Pubkey,
 };
-use borsh::BorshDeserialize;
 
 macro_rules! log {
     ($msg:expr) => {
@@ -37,36 +37,43 @@ pub fn process_instruction(
     let instruction = Instruction::try_from_slice(instruction_data)?;
     match instruction {
         Instruction::CpiTransfer(args) => transfer_sol_with_cpi(accounts, args),
-        Instruction::ProgramTransfer(args) => {
-            transfer_sol_with_program(program_id, accounts, args)
-        }
+        Instruction::ProgramTransfer(args) => transfer_sol_with_program(program_id, accounts, args),
     }
 }
 
 fn transfer_sol_with_cpi(accounts: &[AccountInfo], amount: u64) -> ProgramResult {
-    log!("transfer_sol_with_cpi accounts.len()={} amount={amount}", accounts.len());
+    log!(
+        "transfer_sol_with_cpi accounts.len()={} amount={amount}",
+        accounts.len()
+    );
     let accounts_iter = &mut accounts.iter();
     let payer = next_account_info(accounts_iter)?;
     let recipient = next_account_info(accounts_iter)?;
     let _system_program = next_account_info(accounts_iter)?;
-    
+
     solana_program::program::invoke(
         &solana_program::system_instruction::transfer(payer.key, recipient.key, amount),
-        accounts
-        // &[payer.clone(), recipient.clone(), system_program.clone()],
+        accounts, // &[payer.clone(), recipient.clone(), solana_program::system_program::ID],
     )?;
 
     Ok(())
 }
 
 fn transfer_sol_with_program(
-    _program_id: &Pubkey,
+    program_id: &Pubkey,
     accounts: &[AccountInfo],
     amount: u64,
 ) -> ProgramResult {
-    log!("transfer_sol_with_program accounts.len()={} amount={amount}", accounts.len());
+    log!(
+        "transfer_sol_with_program accounts.len()={} amount={amount}",
+        accounts.len()
+    );
     let accounts_iter = &mut accounts.iter();
     let payer = next_account_info(accounts_iter)?;
+    if payer.owner != program_id {
+        msg!("payer.owner != program_id");
+        return Err(solana_program::program_error::ProgramError::IncorrectProgramId);
+    }
     let recipient = next_account_info(accounts_iter)?;
 
     **payer.try_borrow_mut_lamports()? -= amount;

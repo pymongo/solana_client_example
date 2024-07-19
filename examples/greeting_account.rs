@@ -27,10 +27,6 @@ fn main() {
     let program_id: Pubkey = std::env::var("greeting_hello").unwrap().parse().unwrap();
     let seed = "hello_rust";
     let program_data_pubkey = Pubkey::create_with_seed(&payer.pubkey(), seed, &program_id).unwrap();
-    let data = GreetingAccount { counter: 0 };
-    let mut buffer = Vec::new();
-    data.serialize(&mut buffer).unwrap();
-    let size = buffer.len();
 
     match client.get_account(&program_data_pubkey) {
         Ok(_acc) => {}
@@ -41,6 +37,10 @@ fn main() {
                         RpcError::ForUser(err) => {
                             // AccountNotFound: pubkey=65hH53vj34oG6DGdFePftj7mMeiM3uQtvPLQNPUnSAkV
                             eprintln!("{err}");
+                            let data = GreetingAccount { counter: 0 };
+                            let mut buffer = Vec::new();
+                            data.serialize(&mut buffer).unwrap();
+                            let size = buffer.len();
                             let lamports =
                                 client.get_minimum_balance_for_rent_exemption(size).unwrap();
                             let ix = create_account_with_seed(

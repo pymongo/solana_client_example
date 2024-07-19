@@ -1,18 +1,11 @@
-use solana_client::rpc_client::RpcClient;
 use solana_sdk::{
-    commitment_config::CommitmentConfig,
     instruction::{AccountMeta, Instruction},
     pubkey::Pubkey,
     signature::Signer,
     transaction::Transaction,
 };
 fn main() {
-    dotenv::dotenv().unwrap();
-    let connection = RpcClient::new_with_commitment(
-        "https://api.devnet.solana.com".to_string(),
-        CommitmentConfig::confirmed(),
-    );
-    let payer = solana_client_example::keypair();
+    let (client, payer) = solana_client_example::init();
     let program_id: Pubkey = std::env::var("hello_world").unwrap().parse().unwrap();
 
     let instruction = Instruction {
@@ -25,9 +18,9 @@ fn main() {
         Some(&payer.pubkey()),
         &[&payer],
         // get_latest_blockhash expired in 2min
-        connection.get_latest_blockhash().unwrap(),
+        client.get_latest_blockhash().unwrap(),
     );
-    match connection.send_and_confirm_transaction(&transaction) {
+    match client.send_and_confirm_transaction(&transaction) {
         Ok(signature) => println!("Transaction sent with signature: {}", signature),
         Err(err) => eprintln!("Error sending transaction: {:?}", err),
     }

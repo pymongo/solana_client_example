@@ -1,4 +1,15 @@
-use solana_sdk::signature::Keypair;
+use solana_client::rpc_client::RpcClient;
+use solana_sdk::{commitment_config::CommitmentConfig, signature::Keypair};
+
+pub fn init() -> (RpcClient, Keypair) {
+    dotenv::dotenv().unwrap();
+    std::env::set_var("RUST_BACKTRACE", "1");
+    let connection = RpcClient::new_with_commitment(
+        "https://api.devnet.solana.com".to_string(),
+        CommitmentConfig::confirmed(),
+    );
+    (connection, keypair())
+}
 
 pub fn keypair() -> Keypair {
     let home = std::env::var("HOME").unwrap();

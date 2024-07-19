@@ -17,14 +17,6 @@ fn main() {
     let nonce_account_data = client.get_account(&nonce_account.pubkey()).unwrap();
     let nonce_data = solana_rpc_client_nonce_utils::data_from_account(&nonce_account_data).unwrap();
     let block_hash = nonce_data.blockhash();
-    // below code get wrong nonce_account block_hash
-    // let nonce_state: nonce::State = bincode::deserialize(&nonce_account_data).unwrap();
-    // let block_hash = match nonce_state {
-    //     nonce::State::Initialized(data) => data.blockhash(),
-    //     nonce::State::Uninitialized => {
-    //         unimplemented!()
-    //     }
-    // };
 
     let program_id: Pubkey = std::env::var("hello_world").unwrap().parse().unwrap();
 
