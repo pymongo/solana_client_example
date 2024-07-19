@@ -1,6 +1,6 @@
 # can't use cargo workspace, cargo build-bpf would error
 [workspace]
-members = ["programs/greeting_account", "programs/transfer_sol"]
+members = ["vendor/mpl-token-metadata", "programs/greeting_account", "programs/transfer_sol"]
 [workspace.dependencies]
 borsh = "1.5.1"
 #borsh-derive = "1.5.1"
@@ -8,6 +8,8 @@ solana-program = "2.0.2"
 # program's dev-dependencies
 solana-program-test = "2.0.2"
 solana-sdk = "2.0.2"
+# mpl-token-metadata 用的是 1.18
+#solana-sdk = "2.0.2" 
 tokio = { version = "1.38.1", features = ["macros", "rt"] }
 
 [package]
@@ -19,10 +21,12 @@ edition = "2021"
 solana-client = "2.0.2"
 solana-sdk.workspace = true
 solana-rpc-client-nonce-utils = "2.0.2"
+#solana-program.workspace = true
 spl-token = { version = "6.0.0", features = ["no-entrypoint"] }
 spl-associated-token-account = { version = "4.0.0", features = ["no-entrypoint"] }
+#mpl-token-metadata = "4.1.2"
+mpl-token-metadata = { path="vendor/mpl-token-metadata" }
 borsh.workspace = true
-mpl-token-metadata = "4.1.2"
 
 serde_json = "1.0.120"
 dotenv = "0.15.0"

@@ -21,6 +21,9 @@ Signature: 4HRPLo6WPZrtb1LxezAn1sDHGsk9ZZJ5jcVpuZmUa9R7fUCdgSL49ngZJQmUVdw3H6EWY
 
 > async fn command_create_token
 
+## 设置币种名字
+spl-token initialize-metadata 
+
 ## 查询 USDC 余额
 spl-token balance 4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU
 
@@ -103,3 +106,40 @@ called `Result::unwrap()` on an `Err` value: Error { request: Some(SendTransacti
          &spl_token::ID,
      );
 ```
+
+## metadata 里面的 solana 版本不一样
+
+代码:
+
+```
+let metadata_program_id = mpl_token_metadata::ID;
+let metadata_seeds = &[
+    b"metadata",
+    metadata_program_id.as_ref(),
+    mint.pubkey().as_ref(),
+];
+let (metadata_pda, _metadata_bump) =
+    solana_sdk::pubkey::Pubkey::find_program_address(metadata_seeds, &metadata_program_id);
+```
+
+报错:
+
+```
+    = note: `solana_program::pubkey::Pubkey` and `solana_sdk::pubkey::Pubkey` have similar names, but are actually distinct types
+note: `solana_program::pubkey::Pubkey` is defined in crate `solana_program`
+   --> /home/w/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/solana-program-1.18.18/src/pubkey.rs:88:1
+    |
+88  | pub struct Pubkey(pub(crate) [u8; 32]);
+    | ^^^^^^^^^^^^^^^^^
+note: `solana_sdk::pubkey::Pubkey` is defined in crate `solana_program`
+   --> /home/w/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/solana-program-2.0.2/src/pubkey.rs:96:1
+```
+
+## NFT
+solana summber NFT mint 成功!(测试网)
+
+走完整个流程，要创建各种account payer,PDA,TokenAccount 等等，
+
+代码写错一个参数就 rpc InstructionError 调半天，改solana源码一点点加日志看看哪里入参传错了
+
+Rust代码体验好比ts代码在交易前会检查每个指令数据对不对

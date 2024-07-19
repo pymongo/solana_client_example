@@ -92,3 +92,49 @@ fn main() {
     }
     query_account();
 }
+
+/*
+let seed_prefix = "token001";
+let get_or_create_account = |seed: &str, owner: &Pubkey, size: u64| {
+    let seed = format!("{seed_prefix}_{seed}");
+    let pubkey = Pubkey::create_with_seed(&payer.pubkey(), &seed, &owner).unwrap();
+    let mut account_not_found = false;
+    match client.get_account(&pubkey) {
+        Ok(_) => {}
+        Err(err) => {
+            match err.kind {
+                ClientErrorKind::RpcError(RpcError::ForUser(err)) => {
+                    account_not_found = true;
+                }
+                _ => {
+                    panic!("{err}");
+                }
+            }
+        }
+    }
+    if !account_not_found {
+        return pubkey;
+    }
+    let lamports = client
+        .get_minimum_balance_for_rent_exemption(size as usize)
+        .unwrap();
+    let ix = system_instruction::create_account_with_seed(
+        &payer.pubkey(),
+        &pubkey,
+        &payer.pubkey(),
+        &seed,
+        lamports,
+        size as u64,
+        &owner,
+    );
+    let transaction = Transaction::new_signed_with_payer(
+        &[ix],
+        Some(&payer.pubkey()),
+        &[&payer],
+        client.get_latest_blockhash().unwrap(),
+    );
+    let txhash = client.send_and_confirm_transaction(&transaction).unwrap();
+    println!("seed={seed} account_pubkey={pubkey} txhash={txhash}");
+    pubkey
+};
+*/
