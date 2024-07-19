@@ -6,6 +6,11 @@ use solana_sdk::{
 use spl_associated_token_account::get_associated_token_address;
 use spl_token_2022::extension::{BaseStateWithExtensions, ExtensionType, StateWithExtensionsOwned};
 use spl_token_metadata_interface::state::TokenMetadata;
+/* 只能用 2022 版本去设置 metadata 低于 2022 版本要用 mpl 方式设置 metadata
+root@lb1:~# spl-token --program-id TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA create-token --enable-metadata
+Creating token 8jvRBRbci3mi5ArFKAFhDfirHz812xRKJrC28J4d6fmY under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Error: Program(IncorrectProgramId)
+*/
 fn main() {
     let (client, payer) = solana_client_example::init();
     // TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
@@ -47,8 +52,9 @@ fn main() {
     )
     .unwrap();
     // enable_metadata_ix 必须在 init_mint 之前执行去消耗部分存储空间 预留82byte给mint
+    let decimals = 0;
     let init_mint_ix =
-        instruction::initialize_mint(&program_id, &mint.pubkey(), &payer.pubkey(), None, 0)
+        instruction::initialize_mint(&program_id, &mint.pubkey(), &payer.pubkey(), None, decimals)
             .unwrap();
     let blockhash = client.get_latest_blockhash().unwrap();
     let transaction = Transaction::new_signed_with_payer(
@@ -65,7 +71,7 @@ fn main() {
         name: "USDT".to_string(),
         symbol: "USDT".to_string(),
         uri:
-            "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/svg/icon/usdt.svg"
+            "https://ipfs.io/ipfs/QmPDHYbztLwZAZj53XT8aRvZyQxZkkMkZHiVArjgJGVaBX"
                 .to_string(),
         additional_metadata: vec![("whitepaper".to_string(), "https://tether.to/".to_string())],
         ..Default::default()

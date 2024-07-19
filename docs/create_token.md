@@ -79,7 +79,7 @@ let init_mint_ix = spl_token::instruction::initialize_mint(
 .unwrap();
 ```
 
-## IncorrectProgramId
+## 踩坑一 IncorrectProgramId
 
 ```
 token_program pubkey=HifTogBnro2PNeE4kusMH9qTSLBefBYoe6qgXLqQeB7s 5QcVvdCaxWoWpK2zpfyrKio8P7QYSavfgj1eT1UNodPBTN6d1uqycdhnjqgFXKg9i2pjDpKqxYv3A8WDqrtrEEcJ
@@ -87,9 +87,9 @@ thread 'main' panicked at examples/create_token.rs:101:6:
 called `Result::unwrap()` on an `Err` value: IncorrectProgramId
 ```
 
-修复: token_program_id 入参只能写死 spl_token::ID
+修复: token_program_id 入参只能写死 spl_token::ID 不能用 SystemProgram.ID
 
-## mint_to invalid data
+## 踩坑二 mint_to invalid data
 
 ```
 thread 'main' panicked at examples/create_token.rs:64:68:
@@ -108,7 +108,7 @@ called `Result::unwrap()` on an `Err` value: Error { request: Some(SendTransacti
      );
 ```
 
-## metadata 里面的 solana 版本不一样
+## 踩坑三 mpl 库里面的 solana 版本不一样
 
 代码:
 
@@ -136,6 +136,8 @@ note: `solana_sdk::pubkey::Pubkey` is defined in crate `solana_program`
    --> /home/w/.cargo/registry/src/rsproxy.cn-0dccff568467c15b/solana-program-2.0.2/src/pubkey.rs:96:1
 ```
 
+解决办法 vendor 一份 mpl 的代码升级 solana-sdk 依赖
+
 ## NFT
 solana summber NFT mint 成功!(测试网)
 
@@ -145,7 +147,7 @@ solana summber NFT mint 成功!(测试网)
 
 Rust代码体验好比ts代码在交易前会检查每个指令数据对不对
 
-## 没有开 metadata 权限
+## 踩坑四 没有开 metadata 权限
 
 ```
 root@lb1:~# spl-token initialize-metadata 2KHuEsYHqfjBJjZX2A22HTiRWsk194w2RheRvpcr6A7c usdt usdt "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/svg/icon/usdt.svg"
@@ -184,4 +186,25 @@ root@lb1:~# spl-token initialize-metadata CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1
 Signature: jKXFqQmVRMVsqrBJJpuLLvb6UC9x9HXqciuNQjVY4fuYGDQvrkuZwYVVZgB9zVwVYwaQVSbvhp1QvAbCD4y1Xkw
 ```
 
+## 踩坑五 legacy token 不支持 metadata
 
+```
+root@lb1:~# spl-token create-token --enable-metadata --program-id TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Creating token Am9xYd17dcMTGFLFtdPxCU12JhiD3vMndux6jgewk6wq under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Error: Program(IncorrectProgramId)
+root@lb1:~# spl-token create-token --enable-metadata --program-id TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+Creating token CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS under program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+To initialize metadata inside the mint, please run `spl-token initialize-metadata CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS <YOUR_TOKEN_NAME> <YOUR_TOKEN_SYMBOL> <YOUR_TOKEN_URI>`, and sign with the mint authority.
+```
+
+## 踩坑六 2022 token 不能用 create_associated_token_account
+
+```
+mint pubkey=8mHxVDrQKWEHK9G5wMDPWqDVV2arQFd7uMgywpsB4Ja1 E8Hpanw5fRKVVAfTmjxi9JxCGioD9p3ce12MqnUa6RtDFxETKoiXUVmGkSRWYzAyk977qKR9y8uwZ8NQoYo9ZcP
+metadata 3ZhRGYZL7HopCnxYePBb1eagNjZaz4MR3F5z46E2zNCBV1yQU8EqSXRifucL1drGa392h7Pi83pcGFodsVM9UTEu
+token_account pubkey=HTWPzTPwWgQrCUvmeS9G1EaPgX99u9NUc6qjzbcQYkyT 4ZkoBytpGkoh7QbvzU71TQAfHwV1LDFfLQuV9BHz3bMWWCVRB9YgNEqapPVCyGTBawxmdU7gxFuhkRbdPmNnA7uM
+thread 'main' panicked at examples/spl_token_2022.rs:143:68:
+called `Result::unwrap()` on an `Err` value: Error { request: Some(SendTransaction), kind: RpcError(RpcResponseError { code: -32002, message: "Transaction simulation failed: Error processing Instruction 0: invalid account data for instruction", data: SendTransactionPreflightFailure(RpcSimulateTransactionResult { err: Some(InstructionError(0, InvalidAccountData)), logs: Some(["Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [1]", "Program log: Instruction: MintTo", "Program log: Error: InvalidAccountData", "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 1260 of 200000 compute units", "Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: invalid account data for instruction"]), accounts: None, units_consumed: Some(1260), return_data: None, inner_instructions: None, replacement_blockhash: None }) }) }
+```
+
+参考 solana-program-library 源码要用 create_auxiliary_token_account 这个方式创建 account 会带 extension 信息
