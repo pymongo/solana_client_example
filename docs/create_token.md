@@ -1,6 +1,7 @@
 # spl-token 常用命令
 
 ## 发币
+
 ```
 # default decimal 9
 spl-token create-token
@@ -143,3 +144,44 @@ solana summber NFT mint 成功!(测试网)
 代码写错一个参数就 rpc InstructionError 调半天，改solana源码一点点加日志看看哪里入参传错了
 
 Rust代码体验好比ts代码在交易前会检查每个指令数据对不对
+
+## 没有开 metadata 权限
+
+```
+root@lb1:~# spl-token initialize-metadata 2KHuEsYHqfjBJjZX2A22HTiRWsk194w2RheRvpcr6A7c usdt usdt "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/svg/icon/usdt.svg"
+Error: Client(Error { request: Some(SendTransaction), kind: RpcError(RpcResponseError { code: -32002, message: "Transaction simulation failed: Error processing Instruction 1: custom program error: 0xc", data: SendTransactionPreflightFailure(RpcSimulateTransactionResult { err: Some(InstructionError(1, Custom(12))), logs: Some(["Program 11111111111111111111111111111111 invoke [1]", "Program 11111111111111111111111111111111 success", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]", "Program log: Error: Invalid instruction", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 863 of 399850 compute units", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: custom program error: 0xc"]), accounts: None, units_consumed: Some(1013), return_data: None }) }) })
+```
+
+```
+spl-2022: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+spl     : TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+
+
+root@lb1:~# spl-token create-token
+Creating token 2KHuEsYHqfjBJjZX2A22HTiRWsk194w2RheRvpcr6A7c under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+
+
+---
+root@lb1:~# spl-token create-token --enable-metadata --program-id TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Creating token Am9xYd17dcMTGFLFtdPxCU12JhiD3vMndux6jgewk6wq under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Error: Program(IncorrectProgramId)
+root@lb1:~# spl-token create-token --enable-metadata --program-id TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+Creating token CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS under program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
+To initialize metadata inside the mint, please run `spl-token initialize-metadata CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS <YOUR_TOKEN_NAME> <YOUR_TOKEN_SYMBOL> <YOUR_TOKEN_URI>`, and sign with the mint authority.
+
+Address:  CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS
+Decimals:  9
+
+Signature: 4ahpGH71tNyFwjXEk4HdjBNBmuoQTxUmKcGErq6VNXpRsEdVLpSna9L6oTUxyAo7P47K6fynAj6V5NQN7qMNzmvW
+
+root@lb1:~# spl-token create-token --enable-metadata
+Creating token 98yf76RutMa71X1yVq1mEdJaF4HchVRo3L5HWDC2SWYj under program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+Error: Program(IncorrectProgramId)
+---
+
+root@lb1:~# spl-token initialize-metadata CW9b3SRUM8BSkLAQ23HxQeEm9JaUoHeiSY2xQ1mWu3GS  usdt usdt "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/svg/icon/usdt.svg"
+
+Signature: jKXFqQmVRMVsqrBJJpuLLvb6UC9x9HXqciuNQjVY4fuYGDQvrkuZwYVVZgB9zVwVYwaQVSbvhp1QvAbCD4y1Xkw
+```
+
+

@@ -72,7 +72,7 @@ fn main() {
                 "description": "Forget winter. The sun never sets on Solana.",
                 "image": "https://ipfs.io/ipfs/QmW5wvF52B5yL7QqRM6MvofT3huVEe19VnLLbmC1QR4g3h",
                 "external_url": "https://solanasummer.click/"
-            }            
+            }
             */
             uri: "https://ipfs.io/ipfs/QmPDHYbztLwZAZj53XT8aRvZyQxZkkMkZHiVArjgJGVaBX".to_string(),
             // uri "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg",
@@ -88,19 +88,18 @@ fn main() {
     // let mut transaction = Transaction::new_with_payer(&[ix], Some(&payer.pubkey()));
     // transaction.sign(&[&payer, &mint], blockhash);
     // let txhash = client.send_and_confirm_transaction(&transaction).unwrap();
-    let transaction = Transaction::new_signed_with_payer(
-        &[ix],
-        Some(&payer.pubkey()),
-        &[&payer],
-        blockhash,
-    );
-    let txhash = client.send_and_confirm_transaction(&transaction).unwrap();    
+    let transaction =
+        Transaction::new_signed_with_payer(&[ix], Some(&payer.pubkey()), &[&payer], blockhash);
+    let txhash = client.send_and_confirm_transaction(&transaction).unwrap();
     println!("metadata pubkey={metadata_pda} {txhash}");
 
     let token_account = get_associated_token_address(&payer.pubkey(), &mint.pubkey());
     let ix = spl_associated_token_account::instruction::create_associated_token_account(
+        // TokenAccount 租金的 payer
         &payer.pubkey(),
+        // 要给谁创建 TokenAccount
         &payer.pubkey(),
+        // token mint_addr
         &mint.pubkey(),
         &spl_token::ID,
     );
