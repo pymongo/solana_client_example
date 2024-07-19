@@ -75,8 +75,31 @@ let init_mint_ix = spl_token::instruction::initialize_mint(
 .unwrap();
 ```
 
+## IncorrectProgramId
+
 ```
 token_program pubkey=HifTogBnro2PNeE4kusMH9qTSLBefBYoe6qgXLqQeB7s 5QcVvdCaxWoWpK2zpfyrKio8P7QYSavfgj1eT1UNodPBTN6d1uqycdhnjqgFXKg9i2pjDpKqxYv3A8WDqrtrEEcJ
 thread 'main' panicked at examples/create_token.rs:101:6:
 called `Result::unwrap()` on an `Err` value: IncorrectProgramId
+```
+
+修复: token_program_id 入参只能写死 spl_token::ID
+
+## mint_to invalid data
+
+```
+thread 'main' panicked at examples/create_token.rs:64:68:
+called `Result::unwrap()` on an `Err` value: Error { request: Some(SendTransaction), kind: RpcError(RpcResponseError { code: -32002, message: "Transaction simulation failed: Error processing Instruction 0: invalid account data for instruction", data: SendTransactionPreflightFailure(RpcSimulateTransactionResult { err: Some(InstructionError(0, InvalidAccountData)), logs: Some(["Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [1]", "Program log: Instruction: MintTo", "Program log: Error: InvalidAccountData", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA consumed 1342 of 200000 compute units", "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA failed: invalid account data for instruction"]), accounts: None, units_consumed: Some(1342), return_data: None, inner_instructions: None, replacement_blockhash: None }) }) }
+```
+
+修复如下
+
+```diff
+     let ix = spl_associated_token_account::instruction::create_associated_token_account(
+         &payer.pubkey(),
+-        &token_account,
++        &payer.pubkey(),
+         &mint.pubkey(),
+         &spl_token::ID,
+     );
 ```

@@ -40,7 +40,7 @@ fn main() {
     let token_account = get_associated_token_address(&payer.pubkey(), &mint.pubkey());
     let ix = spl_associated_token_account::instruction::create_associated_token_account(
         &payer.pubkey(),
-        &token_account,
+        &payer.pubkey(),
         &mint.pubkey(),
         &spl_token::ID,
     );
