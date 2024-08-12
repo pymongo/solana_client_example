@@ -46,9 +46,10 @@ fn main() {
     mod validators {
         solana_sdk::declare_id!("F2UsSsRHezY1U4h8FWMmWHkgyVd8r5hVVPNXViod9ZnJ");
     }
+    // KeypairPubkeyMismatch
     let ix = stake::instruction::delegate_stake(
         &staker.pubkey(),
-        &solana_sdk::pubkey!("DDnNKBaqswMQhTR5saBkUdfg4qFBVLqony7c7vfYoUCz"),
+        &staker.pubkey(),
         &validators::ID,
     );
     let transaction = Transaction::new_signed_with_payer(
