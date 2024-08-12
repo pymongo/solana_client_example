@@ -70,9 +70,7 @@ fn main() {
         mint: mint.pubkey(),
         name: "USDT".to_string(),
         symbol: "USDT".to_string(),
-        uri:
-            "https://ipfs.io/ipfs/QmPDHYbztLwZAZj53XT8aRvZyQxZkkMkZHiVArjgJGVaBX"
-                .to_string(),
+        uri: "https://ipfs.io/ipfs/QmPDHYbztLwZAZj53XT8aRvZyQxZkkMkZHiVArjgJGVaBX".to_string(),
         additional_metadata: vec![("whitepaper".to_string(), "https://tether.to/".to_string())],
         ..Default::default()
     };

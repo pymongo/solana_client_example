@@ -4,12 +4,12 @@ members = ["vendor/mpl-token-metadata", "programs/greeting_account", "programs/t
 [workspace.dependencies]
 borsh = "1.5.1"
 #borsh-derive = "1.5.1"
-solana-program = "2.0.2"
+solana-program = "2.0.5"
 # program's dev-dependencies
-solana-program-test = "2.0.2"
-solana-sdk = "2.0.2"
+solana-program-test = "2.0.5"
+solana-sdk = "2.0.5"
 # mpl-token-metadata 用的是 1.18
-#solana-sdk = "2.0.2" 
+#solana-sdk = "2.0.5" 
 tokio = { version = "1.38.1", features = ["macros", "rt"] }
 
 [package]
@@ -18,17 +18,19 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-solana-client = "2.0.2"
+solana-client = "2.0.5"
 solana-sdk.workspace = true
-solana-rpc-client-nonce-utils = "2.0.2"
+solana-rpc-client-nonce-utils = "2.0.5"
 #solana-program.workspace = true
 spl-token = { version = "6.0.0", features = ["no-entrypoint"] }
 spl-token-2022 = { version = "4.0.0", features = ["no-entrypoint"] }
 spl-token-metadata-interface = "0.4.0"
 spl-associated-token-account = { version = "4.0.0", features = ["no-entrypoint"] }
 #mpl-token-metadata = "4.1.2"
+#solana-stake-program = "2.0.5"
 mpl-token-metadata = { path="vendor/mpl-token-metadata" }
 borsh.workspace = true
+libc = "0.2"
 
 serde_json = "1.0.120"
 dotenv = "0.15.0"
