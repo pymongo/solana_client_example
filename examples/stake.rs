@@ -39,18 +39,13 @@ fn main() {
     };
     println!("staker pubkey {}", staker.pubkey());
 
-    /*
-    Identity                                      Vote Account                            Commission  Last Vote        Root Slot     Skip Rate  Credits  Version            Active Stake
-    DDnNKBaqswMQhTR5saBkUdfg4qFBVLqony7c7vfYoUCz  F2UsSsRHezY1U4h8FWMmWHkgyVd8r5hVVPNXViod9ZnJ  100%  317577293 ( -1)  317577262 ( -1)    -      912484  1.18.21         3.997717120 SOL (0.00%)
-    */
-    mod validators {
-        solana_sdk::declare_id!("F2UsSsRHezY1U4h8FWMmWHkgyVd8r5hVVPNXViod9ZnJ");
-    }
+    /* Identity                                      Vote Account                            Commission  Last Vote        Root Slot     Skip Rate  Credits  Version            Active Stake
+    DDnNKBaqswMQhTR5saBkUdfg4qFBVLqony7c7vfYoUCz  F2UsSsRHezY1U4h8FWMmWHkgyVd8r5hVVPNXViod9ZnJ  100%  317577293 ( -1)  317577262 ( -1)    -      912484  1.18.21         3.997717120 SOL (0.00%)*/
     // KeypairPubkeyMismatch
     let ix = stake::instruction::delegate_stake(
         &staker.pubkey(),
         &staker.pubkey(),
-        &validators::ID,
+        &solana_sdk::pubkey!("F2UsSsRHezY1U4h8FWMmWHkgyVd8r5hVVPNXViod9ZnJ"),
     );
     let transaction = Transaction::new_signed_with_payer(
         &vec![ix],
