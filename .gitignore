@@ -2,6 +2,7 @@ target
 Cargo.lock
 package-lock.json
 golang/go.sum
+golang/main
 node_modules
 .env
 # for rsync ignore
