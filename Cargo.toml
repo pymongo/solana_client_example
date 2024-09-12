@@ -19,6 +19,8 @@ edition = "2021"
 
 [dependencies]
 solana-client = "2.0.5"
+solana-rpc-client = "2.0.5"
+solana-pubsub-client = "2.0.5"
 solana-sdk.workspace = true
 solana-rpc-client-nonce-utils = "2.0.5"
 #solana-program.workspace = true
