@@ -12,40 +12,67 @@ import {
     ApiClmmPoolsItem,
   } from "@raydium-io/raydium-sdk";
 import { HttpsProxyAgent } from 'https-proxy-agent'; 
-import fetch, { RequestInfo, RequestInit } from 'node-fetch';
-// import assert from "assert";
+import { Agent } from 'https'
+import assert from "assert";
+// import fetch from 'node-fetch';
 
-const url = 'https://jupiter-fe.helius-rpc.com';
+// import fetch, { RequestInfo, RequestInit } from 'node-fetch';
+// export function solana_connection(): Connection {
+//     const url = 'https://jupiter-fe.helius-rpc.com';
+//     const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
+//     if (proxyUrl) {
+//         console.log("proxyUrl", proxyUrl)
+//     }
+//     const agent = proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined;
+    
+//     const customFetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+//         const headers = {
+//           ...init?.headers,
+//           "Origin": "https://jup.ag",
+//           // 'Authorization': `Bearer token`,
+//         };
+        
+//         return fetch(input, {
+//           ...init,
+//           headers: headers,
+//           agent,
+//         });
+//     };
+    
+//     const connectionConfig: ConnectionConfig = {
+//         fetch: customFetch,  // Pass the fetch function in the config
+//     };
+//     return new Connection(url, connectionConfig)
+// }
 
 export function solana_connection(): Connection {
-    const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
-    if (proxyUrl) {
-        console.log("proxyUrl", proxyUrl)
-    }
-    const agent = proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined;
-    
-    const customFetch = (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-        const headers = {
-          ...init?.headers,
-          "Origin": "https://jup.ag",
-          // 'Authorization': `Bearer token`,
-        };
-        
-        return fetch(input, {
-          ...init,
-          headers: headers,
-          agent,
-        });
-    };
-    
+    const proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+    console.log("proxyUrl", proxyUrl)
+    const agent = new HttpsProxyAgent(proxyUrl!);
     const connectionConfig: ConnectionConfig = {
-        fetch: customFetch,  // Pass the fetch function in the config
-    };
-    return new Connection(url, connectionConfig)
+        httpHeaders: {
+            "Origin": "https://app.phoenix.trade"
+        },
+        wsEndpoint: "wss://ellipsis-main-98a6.mainnet.rpcpool.com",
+        httpAgent: agent as Agent,
+        // fetch: async (input, options) => {
+        //     const processedInput =
+        //     typeof input === 'string' && input.slice(0, 2) === '//'
+        //       ? 'https:' + input
+        //       : input;    
+        
+        //     const result = await fetch(processedInput, {
+        //       ...options,
+        //       agent: agent,
+        //     });
+        //     return result;
+        // },
+    }
+    return new Connection("https://ellipsis-main-98a6.mainnet.rpcpool.com", connectionConfig)
 }
 
 const connection = solana_connection()
-async function fetchTokenBalance(publicKey){
+async function fetchTokenBalance(publicKey: PublicKey){
     const tokenInfo = await connection.getTokenAccountBalance(publicKey);
     // console.log(tokenInfo)
     // const tokenAmount = tokenInfo.value.amount;

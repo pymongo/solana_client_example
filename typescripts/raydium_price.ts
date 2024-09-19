@@ -7,8 +7,8 @@ import {
   LIQUIDITY_STATE_LAYOUT_V4,
 } from "@raydium-io/raydium-sdk";
 import { OpenOrders } from "@project-serum/serum";
-// import BN from "bn.js"; // TypeError: bn_js_1.default is not a constructor
-import * as BN from 'bn.js';
+import BN from "bn.js"; // TypeError: bn_js_1.default is not a constructor
+// import * as BN from 'bn.js';
 import { solana_connection } from "./raydium";
 
 async function getTokenAccounts(connection: Connection, owner: PublicKey) {
@@ -63,6 +63,7 @@ export async function parsePoolInfo() {
 
   const basePnl = poolState.baseNeedTakePnl.toNumber() / baseDecimal;
   const quotePnl = poolState.quoteNeedTakePnl.toNumber() / quoteDecimal;
+  console.info("basePnl", basePnl, quotePnl)
 
   const openOrdersBaseTokenTotal =
     openOrders.baseTokenTotal.toNumber() / baseDecimal;

@@ -46,6 +46,7 @@ func main() {
 
 	client := rpc.New(rpc.DevNet.RPC)
 
+	client.GetTokenAccountBalance()
 	data, err := client.GetAccountInfo(context.Background(), key)
 	if err != nil {
 		log.Fatalln(err)
