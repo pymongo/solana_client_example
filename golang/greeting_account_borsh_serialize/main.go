@@ -38,12 +38,14 @@ func main() {
 		log.Fatalln(err)
 	}
 
+
 	key, err := solana.CreateWithSeed(payer.PublicKey(), "hello_rust", program_id)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	client := rpc.New(rpc.DevNet.RPC)
+
 	data, err := client.GetAccountInfo(context.Background(), key)
 	if err != nil {
 		log.Fatalln(err)
